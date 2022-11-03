@@ -1,33 +1,6 @@
 /* eslint-disable no-magic-numbers, camelcase */
-import { join, resolve } from 'path';
-import { readdirSync } from 'fs';
+import { resolve } from 'path';
 import { defineConfig, loadEnv } from 'vite';
-
-import pkg from './package.json';
-
-const name = pkg.name.split('/')[1];
-
-const entryMap = readdirSync(join(__dirname, 'src'))
-  .filter(dir => !dir.includes('.'))
-  .concat([name])
-  .map(dir => {
-    if (dir === name) {
-      return { '': 'src/index.ts' };
-    }
-
-    return { [dir]: resolve(__dirname, `src/${dir}/index.ts`) };
-  })
-  .reduce((acc, obj) => Object.assign(acc, obj), {});
-
-function getFileName(fmt, n) {
-  const extension = fmt === 'es' ? 'mjs' : 'js';
-
-  if (n.length) {
-    return `${n}/index.${extension}`;
-  }
-
-  return `index.${extension}`;
-}
 
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '');
@@ -44,6 +17,7 @@ export default defineConfig(({ mode }) => {
       __LIB_NAME__: JSON.stringify(env.npm_package_name),
       __LIB_VERSION__: JSON.stringify(env.npm_package_version),
       __ENVIRONMENT__: JSON.stringify(env.NODE_ENV),
+      __ABU_DEBUG__: JSON.stringify(true),
     },
     resolve: { alias: { '@': resolve(__dirname, 'src') }, mainFields: ['browser', 'module', 'jsnext:main', 'jsnext'] },
     server: { watch: { usePolling: true } },
@@ -52,6 +26,7 @@ export default defineConfig(({ mode }) => {
         provider: 'istanbul',
         reporter: ['text', 'json', 'html'],
       },
+      environment: 'jsdom',
       includeSource: ['src/**/*.{js,ts}'],
     },
   };

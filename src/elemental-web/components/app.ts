@@ -29,5 +29,5 @@ printOnDOM(`
 `);
 
 document.addEventListener('button-clicked', e => {
-  printOnDOM((e as CustomEvent).detail);
+  printOnDOM(`<p>${(e as CustomEvent).detail}</p>`);
 });

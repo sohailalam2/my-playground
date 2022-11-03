@@ -6,13 +6,13 @@ export class BlogDescription extends ValueObject {}
 
 export class BlogLikeCount extends ValueObject<number> {}
 
-export class InvalidBlogUrlException extends Exception<string> {}
+export class InvalidBlogUrlException extends Exception {}
 
 export class BlogUrl extends ValueObject {
   validate() {
     super.validate();
-    if (!this.valueOf().includes('/')) {
-      throw new InvalidBlogUrlException(this.valueOf());
+    if (!this.value.includes('/')) {
+      throw new InvalidBlogUrlException(this.value);
     }
   }
 }

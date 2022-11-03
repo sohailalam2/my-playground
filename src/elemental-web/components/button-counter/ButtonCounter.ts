@@ -2,17 +2,17 @@
 import { hasValue } from '@sohailalam2/abu';
 import { ElementalComponent } from '@sohailalam2/elemental-web';
 
-import css from './style.css?inline';
+import styles from './style.scss?inline';
 
 export class ButtonCounter extends ElementalComponent<number> {
   protected connectedCallback() {
     super.connectedCallback();
-    this.addEventHandlers([{ name: 'click', handler: this.onClick.bind(this) }]);
+    this.registerEventListeners([{ name: 'click', handler: this.onClick.bind(this) }]);
   }
 
   render() {
     return `
-      <style media="screen">${css}</style>
+      <style media="screen">${styles}</style>
       <button>Click Me (${this.$state})</button>
     `;
   }
@@ -22,7 +22,7 @@ export class ButtonCounter extends ElementalComponent<number> {
       const count = this.$state + 1;
 
       this.updateState(count);
-      this.raiseEvent('button-clicked', `You have clicked my button ${count} times`);
+      this.raiseEvent('button-clicked', true, `You have clicked my button ${count} times`);
     }
   }
 }

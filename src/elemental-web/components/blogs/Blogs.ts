@@ -13,7 +13,9 @@ import {
 export class Blogs extends ElementalComponent<BlogPostState[]> {
   protected connectedCallback() {
     super.connectedCallback();
-    this.addEventHandlers([{ name: 'button-clicked', handler: this.onButtonClicked.bind(this), isCustomEvent: true }]);
+    this.registerEventListeners([
+      { name: 'button-clicked', handler: this.onButtonClicked.bind(this), isCustomEvent: true },
+    ]);
   }
 
   protected render(): string {
